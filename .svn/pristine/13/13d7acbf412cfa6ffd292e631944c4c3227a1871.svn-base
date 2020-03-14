@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "warmup3.h" 
+
+int main()
+{
+	char board[NUM_ROWS][NUM_COLS];  
+	print_board(board); 
+} 

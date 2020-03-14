@@ -1,0 +1,177 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+#include "hw5.h" 
+
+/* make_empty_string
+ */
+safe_string* make_empty_string()
+{ 
+	safe_string* string;
+	string = (safe_string*)malloc(sizeof(safe_string)); 
+	string->str = NULL;   
+	string->allocated_length = 0;
+	return string; 
+} 
+
+/* make_string 
+ * 
+ */ 
+safe_string* make_string(char *str)
+{
+	if(str == NULL) 
+	{ 
+		return make_empty_string(); 
+	} 
+	else
+	{ 
+		int str_len;  
+		str_len = strlen(str); 
+		safe_string* safestr;
+		safestr = (safe_string*)malloc(sizeof(safe_string)); 
+		safestr->str = (char*)(malloc(sizeof(char) * str_len));
+		strcpy(safestr->str, str); 
+		safestr->allocated_length = str_len;
+	
+		return safestr;
+	}  
+}
+
+
+
+/* safe_str_cpy
+ * 
+ */  
+void safe_str_cpy(safe_string *dest, safe_string *src)
+{
+	// is the dest big enough to hold the src? 
+	unsigned int src_len; 
+	src_len = src->allocated_length; 
+	printf("src_len: %d, dest_len: %d\n", src_len, \ 
+	dest->allocated_length); 
+	printf("src->str: %s dest->str: %s\n", src->str,dest->str); 
+	if(dest->allocated_length <  src_len)
+	{ 
+		//reallocate space in dest
+		free(dest->str); 
+		dest->str = (char*)(malloc(sizeof(char) * src_len));
+		printf("allocated space:%d\n", sizeof(char)*src_len); 
+		dest->allocated_length = src_len; 
+	}
+	//copy source to dest 
+	strcpy(dest->str,src->str);  
+	printf("dest->str: %s, src->str: %s\n", dest->str, src->str); 
+	printf("dest->allocated_length: %d, src->allocated_len: %d\n",\
+	dest->allocated_length, src->allocated_length); 
+}
+
+
+/* safe_str_cat 
+ *
+ */  
+void safe_str_cat(safe_string *dest, safe_string *src)
+{
+	// is the dest big enough to hold the src? 
+	unsigned int src_len = src->allocated_length;
+	unsigned int dest_len = dest->allocated_length;  
+	printf("src_len: %d, dest_len: %d\n", src_len, \ 
+	dest->allocated_length); 
+	printf("src->str: %s dest->str: %s\n", src->str,dest->str); 
+	//reallocate space in dest
+	free(dest->str); 
+	dest->str = (char*)(malloc(sizeof(char) * src_len));
+	printf("allocated space:%d\n", sizeof(char)*src_len); 
+	dest->allocated_length = src_len + dest_len; 
+	//copy source to dest 
+	strcat(dest->str,src->str);  
+	printf("dest->str: %s, src->str: %s\n", dest->str, src->str); 
+	printf("dest->allocated_length: %d, src->allocated_len: %d\n",\
+	dest->allocated_length, src->allocated_length); 
+
+
+}
+/* *safe_strchr
+ * safe_strchr returns a pointer that points within the string that s 
+ * holds - the first occurrence of the letter c within s's string. 
+ * If c is not within s's string, it returns NULL.
+ */
+char *safe_strchr(safe_string *s, char c)
+{ 
+	//if not empty 90% case  
+	int i = 0; 
+	int found = 0; 
+	while(i < s->allocated_length || !found) 
+	{
+		if(s->str[i] == c);  
+		{
+			found = 1; 	
+		} 
+		i++; 
+	}
+	if(found) 
+	{ 
+		return &s->str[i];   	
+	}
+	return NULL; 
+} 
+
+/* safe_strcmp
+ * safe_strcmp returns 0 if the strings within s1 and s2 are identical,
+ *  -1 if s1 is earlier alphabetically and 1 if s2 is earlier
+*  alphabetically * . Note that strcmp() compares using ascii values, which is not perfect alphabetization since capital letters are far away from lower-case letters. Write a version of strcmp that considers a capital letter 'A' to be less than a lower case 'a', but they are both less than 'B' and 'b'.
+ *
+ */ 
+int safe_strcmp(safe_string *s1, safe_string *s2)
+{ 
+	if(s1->str != NULL && s2->str != NULL)
+	{
+		int done = 0; 
+		int s1_ind = 0; 
+		int s2_ind = 0;
+		int s1_len = s1->allocated_length; 
+		int s2_len = s2->allocated_length;
+		int retval = 0; //assuming identical   
+		while(s1_ind < s1_len && s2_ind < s2_len) 
+		{ 
+			if(s1->str[s1_ind] == s2->str[s2_ind]) 
+			{
+				s1_ind++;
+				s2_ind++; 
+			}
+			else if(s1->str[s1_ind] > s2->str[s2_ind])
+			{ 
+				return -1; 
+			} 
+			else
+			{
+				return 1; 
+			} 
+		} 
+		//strings are exactly the same in terms of chars comp. 
+		// in while loop  
+		if(s1_len < s2_len)
+		{
+			return -1; 
+		} 
+		else if(s2_len > s1_len)
+		{ 
+			return 1; 
+		}
+		else
+		{
+			return 0; 
+		} 
+	}
+	else if(s1->str == NULL && s2->str != NULL) 
+	{
+		return 1;  
+	} 
+  	else if(s2->str == NULL && s1->str != NULL)
+	{
+		return -1; 
+	}  
+	else //s2->str == NULL && s1->str == NULL
+	{
+		return 0; 
+	}  
+} 

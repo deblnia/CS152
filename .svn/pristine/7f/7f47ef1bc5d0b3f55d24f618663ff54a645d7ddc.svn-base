@@ -1,0 +1,87 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include "hw5.h" 
+
+/* 
+int main(int argc, char *argv[])
+
+   int func_to_run = 0;
+   char *str;
+ 
+   if( argc < 2 ) {
+      printf("The argument supplied is %s\n", argv[1]);
+   }
+   else {
+      func_to_run = atoi(argv[1]);
+      printf("Function Running: %d\n", func_to_run);
+      switch (func_to_run)
+	{	
+    	case 1: // make_string, one inpu
+	printf("in case 1 \n"); 
+		if(argc >= 3) 
+		{
+			printf("first line of if\n"); 
+			safe_string* result1; 
+			printf("before str[100]\n");
+			str = (char*)malloc(sizeof(char)*100);
+			str[0] = '\0';  
+			strcat(str,argv[3]);   
+			printf("str:%s\n", str); 
+			result1 = make_string(str);
+			printf("result1->str: %s, \
+			result1->allocated_length:%d\n", result1->str, \
+			result1->allocated_length);
+		} 
+		else
+			printf("Please provide all arguments.\n"); 
+        	break;
+    	case 2: // safe_str_cpy, 2 inputs 
+        	break;
+    	default: // code to be executed if function not recognized 
+		printf("Unrecognized function number. Please choose \
+			a valid number..\n"); 
+	} 
+   }
+*/ 
+int main()
+{
+//test make string 
+safe_string* result1; 
+char str[15] = "hello world";  
+result1 = make_string(str);
+printf("result1->str: %s, \
+result1->allocated_length:%d\n", result1->str, result1->allocated_length);
+
+//test safe_str_copy 
+safe_string* result2; 
+result2 = make_empty_string();
+safe_str_cpy(result2, result1); 
+
+
+safe_string* result3; 
+char str3[15] = "hello";  
+result3 = make_string(str3);
+printf("result3->str: %s, \
+result3->allocated_length:%d\n", result3->str, result3->allocated_length);  
+
+safe_str_cpy(result3, result1);
+printf("AFTER SAFE STR COPY: result3->str: %s, \
+result3->allocated_length:%d\n", result3->str, result3->allocated_length);  
+
+//test safe_str_cat 
+printf("TESTING safe_str_cat:"); 
+safe_str_cat(result3,result1); 
+printf("AFTER SAFE STR CAT: result3->str: %s, \
+result3->allocated_length:%d\n", result3->str, result3->allocated_length); 
+
+
+//test safe_strchr 
+char str4 = 'h';
+char *result10;  
+result10 = safe_strchr(result3, str4); 
+printf("result %p\n", result10); 
+
+
+//safe_strcmp 
+
+}

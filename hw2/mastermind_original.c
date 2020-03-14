@@ -1,0 +1,163 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "mastermind.h"
+
+
+// TODO: Create the comment header for this function
+unsigned int extract_digit(unsigned int pattern, unsigned int digit)
+{
+	// you may NOT use any math methods - use basic mathematical operations,
+	// conditionals, and/or loops for problems this small and regular.
+	// TODO: Implement this function
+	// TODO: Write printf that states it is not yet implemented
+	return 0;
+}
+
+// TODO: Create the comment header for this function
+unsigned int num_of_color(unsigned int pattern, unsigned int color)
+{
+	// TODO: Implement this function
+	// TODO: Write printf that states it is not yet implemented
+	return 0;
+}
+
+// TODO: Create the comment header for this function
+unsigned int count_exact_matches(unsigned int guess, unsigned int solution)
+{
+	// TODO: Implement this function
+	// TODO: Write printf that states it is not yet implemented
+	return 0;
+}
+
+// TODO: Create the comment header for this function
+unsigned int count_color_matches(unsigned int guess, unsigned int solution)
+{
+	// TODO: Implement this function
+	// TODO: Write printf that states it is not yet implemented
+	return 0;
+}
+
+// TODO: Create the comment header for this function
+unsigned int get_guess_feedback(unsigned int guess, unsigned int solution)
+{
+	// TODO: Implement this function
+	// TODO: Write printf that states it is not yet implemented
+	return 0;
+}
+
+
+// TODO: Write a test function for each mstermind function
+
+/* test_mastermind
+ * This is the test function that has 3+ good test cases for this function in your
+ * mastermind program. This verifies that the bits are working so that if you find a 
+ * bug you can more easily localize it.
+ * inputs:
+ *   none. Tests are hard coded.
+ * outputs:
+ *   none. Test results are printed out.
+ */
+void test_mastermind()
+{
+
+	// TODO: Write 3+ good test cases for each function you implement for mastermind
+}
+
+/* print_mastermind_instructions
+ * This prints out user instructions to play mastermind.
+ * inputs:
+ *   none
+ * outputs:
+ *   none. Insructions are printed to screen.
+ */
+void print_mastermind_instructions()
+{
+	printf("Welcome to mastermind. I am thinking of a 4-number\n");
+	printf("sequence. All four numbers are between 1 and 6.\n");
+	printf("You have 12 guesses to guess it correctly.\n");
+	printf("Each time you guess, I'll tell two things.\n");
+	printf("1. How many numbers are correct and in the correct position.\n");
+	printf("2. How many other numbers are correct but in the wrong position.\n");
+	printf("Let's get started!!!\n");
+}
+
+/* get_new_code
+ * Generates a 4-digit number, with each digit a number from 1 to 6, inclusive.
+ * inputs:
+ *   none
+ * outputs:
+ *   unsigned int - 4-digit number with each digit from 1 to 6
+ */
+unsigned int get_new_code()
+{
+	int i;
+	int result = 0;
+	for (i = 0; i < 4; i++)
+	{
+		result = result * 10;
+		result = result + ((rand() % 6) + 1);
+	}
+	return result;
+}
+
+
+/* play_mastermind
+ * This is the game loop to play mastermind. All print statements are provided so that you 
+ * have consistent messages for grading purposes. An example of how to do error checking is 
+ * provided so you can model that.
+ * inputs:
+ *  none. Users play interactively
+ * outputs:
+ *  none. Everything is printed.
+ */
+void play_mastermind()
+{
+
+	unsigned int guess_num = 0;
+	unsigned int solution = 0;
+	unsigned int guess = 0;
+	unsigned int feedback = 0;
+
+	print_mastermind_instructions();
+	solution = get_new_code();
+	// print this out so that we can tell whether yours matches ours. Don't remote
+	printf("solution: %u\n",solution);
+
+	// TODO: Limit number of guesses to 12 guesses
+
+	// TODO: Print out the guess number each time
+	printf("Guess %d - ",guess_num);
+	printf("Input your 4-digit guess: ");
+	scanf("%u",&guess);
+
+	// TODO: Call your functions to find out how close the guess was
+
+
+	// report the feedback
+	printf("Feedback: %u correct placement, correct color,\n",
+		feedback / 10);
+	printf("%u incorrect placement, correct color\n",
+		feedback % 10);
+	// note: If it's an invalid guess, go back and ask the guess immediately. Go back
+	// to Guess %d - . Don't print out the Congratuations or Not quite below.
+	printf("%u is an invalid guess. Make sure your guess is a 4-digit number, each digit between 1-6.\n",
+                guess);
+	
+
+
+	// TODO: Detect whether guess was entirely correct:
+	// if correct, print out congrats and return from this function.
+	printf("Congratulations! Your guess of %u was correct!\n",
+		guess);
+
+	// TODO: if incorrect, print out number of guesses left
+	// if incorrect
+	printf("Not quite - you still have %u guesses left!\n",
+		guess_num);
+
+
+	// only print this out if they ran out of guesses didn't win.
+	printf("Sorry, you did not guess it! The solution was %u\n",solution);
+}
+

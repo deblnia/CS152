@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "hw6.h"
+
+int main(int argc, char *argv[])
+{
+	// make sure there are two arguments - hw5 and filename
+	if (argc < 2)
+	{
+		printf("Usage: ./hw6 filename. Missing filename\n");
+		exit(1);
+	}
+	char *filename = argv[1];
+
+	// open file for reading
+	FILE *fp = fopen(filename, "r");
+	if (fp == NULL)
+	{
+		printf("Could not open file %s for reading\n",filename);
+		exit(2);
+	}
+
+	// read in each record from the file
+	char buffer[BUFSIZ];
+	node *product_list = NULL;
+	while (!feof(fp) && (fgets(buffer,500,fp) != NULL))
+	{
+		// parse the line to split up the fields
+		char *category;
+		char *name;
+		uint pID;
+		uint current_stock;
+		uint min_stock;
+		uint max_stock;
+		char *tmp_s;
+
+		// first field is category
+		category = strtok(buffer," ,\n\r");
+		// second field is name
+		name = strtok(NULL," ,\n\r");
+		// third is pID;
+		tmp_s = strtok(NULL," ,\n\r");
+		pID = atoi(tmp_s);
+		// fourth is current
+		tmp_s = strtok(NULL," ,\n\r");
+		current_stock = atoi(tmp_s);
+		// fifth is min
+		tmp_s = strtok(NULL," ,\n\r");
+		min_stock = atoi(tmp_s);
+		// sixth is max
+		tmp_s = strtok(NULL," ,\n\r");
+		max_stock = atoi(tmp_s);
+
+		printf("Read in record: %s, %s, %u, %u, %u, %u\n",
+			category, name, pID, current_stock, min_stock,
+			max_stock);
+
+		// now you need to write the code to create a record
+		// and put that record into the linked list
+		product_info *new_product;
+		new_product = create_product(name, category, pID, current_stock,
+											min_stock, max_stock);
+		print_product(new_product, stdout);
+		product_list = insert_head(product_list, new_product);
+		print_list(product_list, stdout);
+
+	}
+// here you can add stuff to test your other functions
+printf("TESTING FIND:\n");
+product_info *find_one = find(product_list, 23765);
+if(find_one != NULL)
+{
+	printf("find_one - %s\n", find_one->name);
+}
+else
+	printf("not found 1 \n");
+product_info *find_two = find(product_list, 92656);
+if(find_two != NULL)
+	printf("find_two - %s\n", find_two->name);
+else
+	printf("Not found 2\n");
+product_info *find_three = find(product_list, 38590);
+if(find_three != NULL)
+	printf("find_three - %s\n", find_three->name);
+else
+	printf("not found 3\n");
+
+printf("\nTESTING RECORD RESTOCK SINGLE:\n");
+record_restocked_single(product_list, 3826);
+record_restocked_single(product_list, 92656);
+record_restocked_single(product_list, 8261);
+print_list(product_list, stdout);
+
+
+
+printf("\nTESTING PRODUCT SOLD:\n");
+product_sold(product_list, 3826);
+product_sold(product_list, 92656);
+product_sold(product_list, 8261);
+print_list(product_list, stdout);
+
+
+printf("\nTESTING ADD SORTED PRODUCT ID:\n");
+node *head0;
+product_info *prod_info = create_product("Banana", "Grocery", 123456, 15, 5,20);
+head0 = insert_head(head0, prod_info);
+product_info *another_info = create_product("Grape", "Grocery", 234567, 15, 5,20);
+head0 = insert_head(head0, another_info);
+add_sorted_productID(head0, stdout);
+print_list(head0, stdout);
+
+
+printf("\nTESTING ADD SORTED CATEGORY IDEA:\n");
+node *head1;
+product_info *prod_info1 = create_product("Banana", "Grocery", 123456, 15, 5,20);
+head1 = insert_head(head1, prod_info);
+product_info *another_info1 = create_product("Grape", "Grocery", 234567, 15, 5,20);
+head1 = insert_head(head1, another_info1);
+add_sorted_productID(head1, stdout);
+print_list(head1, stdout);
+
+
+printf("\nTESTING MAKE RESTOCK LIST:\n");
+node *restock_list_test = make_restock_list(product_list);
+print_list(restock_list_test, stdout);
+
+printf("\nTESTING RECORD RESTOCK LIST:\n");
+record_restocked_list(restock_list_test, product_list);
+print_list(product_list, stdout);
+
+
+}
